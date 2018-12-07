@@ -1,6 +1,7 @@
 package healthcheck
 
 import (
+	"reflect"
 	"time"
 )
 
@@ -67,4 +68,26 @@ func (h *Healthchecks) recheck() {
 
 	h.ReportTime = time.Now()
 	h.Healthchecks = rechecked
+}
+
+func (h Healthchecks) byType(t string) (hList []Healthcheck) {
+	hList = make([]Healthcheck, 0)
+
+	for _, hc := range h.Healthchecks {
+		v := reflect.ValueOf(hc).FieldByName(t)
+
+		if !v.IsValid() {
+			continue
+		}
+
+		if _, ok := v.Interface().(bool); !ok {
+			return
+		}
+
+		if v.Bool() {
+			hList = append(hList, hc)
+		}
+	}
+
+	return
 }
