@@ -41,7 +41,7 @@ func (h *Healthcheck) Run() {
 
 	h.LastRun = time.Now()
 	h.Success, h.Output = h.F()
-	h.Duration = float64(time.Since(h.LastRun))
+	h.Duration = float64(time.Since(h.LastRun)) / 1000000.0
 
 	h.State = "run"
 }
