@@ -34,12 +34,13 @@ It exposes a fasthttp handler which can be mounted to do stuff
 * [type Healthchecks](#Healthchecks)
   * [func New(v Version) Healthchecks](#New)
   * [func (h *Healthchecks) Add(hc Healthcheck)](#Healthchecks.Add)
+  * [func (h Healthchecks) Handle(ctx *fasthttp.RequestCtx)](#Healthchecks.Handle)
   * [func (h *Healthchecks) Start()](#Healthchecks.Start)
 * [type Version](#Version)
 
 
 #### <a name="pkg-files">Package files</a>
-[doc.go](/src/github.com/jspc/go-health/doc.go) [healthcheck.go](/src/github.com/jspc/go-health/healthcheck.go) [healthchecks.go](/src/github.com/jspc/go-health/healthchecks.go) [version.go](/src/github.com/jspc/go-health/version.go) 
+[api.go](/src/github.com/jspc/go-health/api.go) [doc.go](/src/github.com/jspc/go-health/doc.go) [healthcheck.go](/src/github.com/jspc/go-health/healthcheck.go) [healthchecks.go](/src/github.com/jspc/go-health/healthchecks.go) [version.go](/src/github.com/jspc/go-health/version.go) 
 
 
 
@@ -106,7 +107,7 @@ Run will.... run the healthcheck
 
 
 
-## <a name="Healthchecks">type</a> [Healthchecks](/src/target/healthchecks.go?s=202:371#L14)
+## <a name="Healthchecks">type</a> [Healthchecks](/src/target/healthchecks.go?s=213:382#L15)
 ``` go
 type Healthchecks struct {
     ReportTime   time.Time     `json:"report_as_of"`
@@ -124,7 +125,7 @@ and
 
 
 
-### <a name="New">func</a> [New](/src/target/healthchecks.go?s=489:521#L24)
+### <a name="New">func</a> [New](/src/target/healthchecks.go?s=500:532#L25)
 ``` go
 func New(v Version) Healthchecks
 ```
@@ -135,7 +136,7 @@ timers and logic for running healthchecks
 
 
 
-### <a name="Healthchecks.Add">func</a> (\*Healthchecks) [Add](/src/target/healthchecks.go?s=694:736#L34)
+### <a name="Healthchecks.Add">func</a> (\*Healthchecks) [Add](/src/target/healthchecks.go?s=705:747#L35)
 ``` go
 func (h *Healthchecks) Add(hc Healthcheck)
 ```
@@ -144,7 +145,19 @@ Add takes a Healthcheck and enrolls it into the Healthchecks thing
 
 
 
-### <a name="Healthchecks.Start">func</a> (\*Healthchecks) [Start](/src/target/healthchecks.go?s=842:872#L39)
+### <a name="Healthchecks.Handle">func</a> (Healthchecks) [Handle](/src/target/api.go?s=269:323#L14)
+``` go
+func (h Healthchecks) Handle(ctx *fasthttp.RequestCtx)
+```
+Handle provides an API endpoint/ router for healthcheck endpoints
+which can be mounted into ct fasthttp apps.
+
+It is compliant with github.com/beamly/go-http-middleware
+
+
+
+
+### <a name="Healthchecks.Start">func</a> (\*Healthchecks) [Start](/src/target/healthchecks.go?s=853:883#L40)
 ``` go
 func (h *Healthchecks) Start()
 ```
