@@ -34,14 +34,3 @@ type Healthcheck struct {
 	Success  bool        `json:"success"`
 	Output   interface{} `json:"output"`
 }
-
-// Run will.... run the healthcheck
-func (h *Healthcheck) Run() {
-	h.State = "running"
-
-	h.LastRun = time.Now()
-	h.Success, h.Output = h.F()
-	h.Duration = float64(time.Since(h.LastRun)) / 1000000.0
-
-	h.State = "run"
-}
