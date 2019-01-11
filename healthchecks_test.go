@@ -2,6 +2,8 @@ package healthcheck
 
 import (
 	"testing"
+
+	"github.com/jspc/go-health/models"
 )
 
 type dummyCheck struct {
@@ -67,20 +69,20 @@ func TestHealthchecks_Recheck(t *testing.T) {
 func TestHealthchecks_ByType(t *testing.T) {
 	for _, test := range []struct {
 		name         string
-		healthchecks []Healthcheck
+		healthchecks []models.Healthcheck
 		t            string
 		expectLen    int
 	}{
-		{"Two of two, liveness", []Healthcheck{Healthcheck{Name: "one", Liveness: true}, Healthcheck{Name: "two", Liveness: true}}, "Liveness", 2},
-		{"One of two, liveness", []Healthcheck{Healthcheck{Name: "one", Liveness: true}, Healthcheck{Name: "two", Liveness: false}}, "Liveness", 1},
-		{"None of two, liveness", []Healthcheck{Healthcheck{Name: "one", Liveness: false}, Healthcheck{Name: "two", Liveness: false}}, "Liveness", 0},
+		{"Two of two, liveness", []models.Healthcheck{models.Healthcheck{Name: "one", Liveness: true}, models.Healthcheck{Name: "two", Liveness: true}}, "Liveness", 2},
+		{"One of two, liveness", []models.Healthcheck{models.Healthcheck{Name: "one", Liveness: true}, models.Healthcheck{Name: "two", Liveness: false}}, "Liveness", 1},
+		{"None of two, liveness", []models.Healthcheck{models.Healthcheck{Name: "one", Liveness: false}, models.Healthcheck{Name: "two", Liveness: false}}, "Liveness", 0},
 
-		{"Two of two, readiness", []Healthcheck{Healthcheck{Name: "one", Readiness: true}, Healthcheck{Name: "two", Readiness: true}}, "Readiness", 2},
-		{"One of two, readiness", []Healthcheck{Healthcheck{Name: "one", Readiness: true}, Healthcheck{Name: "two", Readiness: false}}, "Readiness", 1},
-		{"None of two, readiness", []Healthcheck{Healthcheck{Name: "one", Readiness: false}, Healthcheck{Name: "two", Readiness: false}}, "Readiness", 0},
+		{"Two of two, readiness", []models.Healthcheck{models.Healthcheck{Name: "one", Readiness: true}, models.Healthcheck{Name: "two", Readiness: true}}, "Readiness", 2},
+		{"One of two, readiness", []models.Healthcheck{models.Healthcheck{Name: "one", Readiness: true}, models.Healthcheck{Name: "two", Readiness: false}}, "Readiness", 1},
+		{"None of two, readiness", []models.Healthcheck{models.Healthcheck{Name: "one", Readiness: false}, models.Healthcheck{Name: "two", Readiness: false}}, "Readiness", 0},
 
-		{"Dodgy name", []Healthcheck{Healthcheck{Name: "one", Readiness: true}, Healthcheck{Name: "two", Readiness: true}}, "Nonsuch", 0},
-		{"Not a bool", []Healthcheck{Healthcheck{Name: "one", Readiness: true}, Healthcheck{Name: "two", Readiness: true}}, "RunbookItem", 0},
+		{"Dodgy name", []models.Healthcheck{models.Healthcheck{Name: "one", Readiness: true}, models.Healthcheck{Name: "two", Readiness: true}}, "Nonsuch", 0},
+		{"Not a bool", []models.Healthcheck{models.Healthcheck{Name: "one", Readiness: true}, models.Healthcheck{Name: "two", Readiness: true}}, "RunbookItem", 0},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			h := Healthchecks{

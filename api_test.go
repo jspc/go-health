@@ -47,3 +47,25 @@ func TestHealthchecks_Serve(t *testing.T) {
 		})
 	}
 }
+
+func TestHealthchecks_Serve_Fields(t *testing.T) {
+	req := fasthttp.AcquireRequest()
+	req.SetRequestURI("")
+	req.Header.SetMethod("GET")
+
+	resp := fasthttp.AcquireResponse()
+
+	c := &fasthttp.RequestCtx{
+		Request:  *req,
+		Response: *resp,
+	}
+
+	Healthchecks{}.Handle(c)
+
+	body := string(c.Response.Body())
+	expect := `{"report_as_of":"0001-01-01T00:00:00Z","healthchecks":null}`
+
+	if expect != body {
+		t.Errorf("expected %q, received %q", expect, body)
+	}
+}

@@ -3,6 +3,8 @@ package healthcheck
 import (
 	"reflect"
 	"time"
+
+	"github.com/jspc/go-health/models"
 )
 
 var (
@@ -10,35 +12,29 @@ var (
 	Tick = 10 * time.Second
 )
 
-// Healthchecks represent the state of a run set of healthchecks
-// and
-type Healthchecks struct {
-	ReportTime   time.Time     `json:"report_as_of"`
-	Healthchecks []Healthcheck `json:"healthchecks"`
-
-	timer   time.Duration
-	version Version
-}
+// Healthchecks wraps the Healthchecks model and provides functions and
+// things
+type Healthchecks models.Healthchecks
 
 // New returns a Healthchecks object which exposes an API and contains
 // timers and logic for running healthchecks
 func New(v Version) Healthchecks {
 	return Healthchecks{
-		Healthchecks: make([]Healthcheck, 0),
+		Healthchecks: make([]models.Healthcheck, 0),
 
-		timer:   Tick,
-		version: v,
+		Timer:   Tick,
+		Version: models.Version(v),
 	}
 }
 
 // Add takes a Healthcheck and enrolls it into the Healthchecks thing
 func (h *Healthchecks) Add(hc Healthcheck) {
-	h.Healthchecks = append(h.Healthchecks, hc)
+	h.Healthchecks = append(h.Healthchecks, models.Healthcheck(hc))
 }
 
 // Start will run a timer doing healthchecks and stuff
 func (h *Healthchecks) Start() {
-	for _ = range time.Tick(h.timer) {
+	for _ = range time.Tick(h.Timer) {
 		go h.recheck()
 	}
 }
@@ -54,12 +50,12 @@ func (h *Healthchecks) recheck() {
 
 			hc1.Run()
 			c <- hc1
-		}(hc)
+		}(Healthcheck(hc))
 	}
 
-	rechecked := make([]Healthcheck, 0)
+	rechecked := make([]models.Healthcheck, 0)
 	for hc := range c {
-		rechecked = append(rechecked, hc)
+		rechecked = append(rechecked, models.Healthcheck(hc))
 
 		if len(rechecked) == size {
 			close(c)
@@ -70,8 +66,8 @@ func (h *Healthchecks) recheck() {
 	h.Healthchecks = rechecked
 }
 
-func (h Healthchecks) byType(t string) (hList []Healthcheck) {
-	hList = make([]Healthcheck, 0)
+func (h Healthchecks) byType(t string) (hList []models.Healthcheck) {
+	hList = make([]models.Healthcheck, 0)
 
 	for _, hc := range h.Healthchecks {
 		v := reflect.ValueOf(hc).FieldByName(t)

@@ -40,7 +40,7 @@ func (h Healthchecks) Handle(ctx *fasthttp.RequestCtx) {
 }
 
 func (h Healthchecks) handleVersion(ctx *fasthttp.RequestCtx) {
-	sendJson(ctx, h.version)
+	sendJson(ctx, h.Version)
 }
 
 func (h Healthchecks) handleAll(ctx *fasthttp.RequestCtx) {

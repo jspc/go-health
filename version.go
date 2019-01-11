@@ -2,6 +2,8 @@ package healthcheck
 
 import (
 	"os"
+
+	"github.com/jspc/go-health/models"
 )
 
 const (
@@ -10,16 +12,8 @@ const (
 	SquadEnvVar   = "CT_SQUAD"
 )
 
-// Version exposes the version, version config, and basic
-// links to bits and bobs it needs
-type Version struct {
-	Name      string `json:"release_name"`
-	Built     int64  `json:"built"`
-	CircleSha string `json:"version"`
-	Oracle    string `json:"oracle"`
-	Runbook   string `json:"runbook"`
-	Squad     string `json:"squad"`
-}
+// Version wraps the version model with convenience functions
+type Version models.Version
 
 // FromEnv will update a Version with the data from the environment.
 // It is aimed at kubernetes deploys- there are some magic vars inserted
