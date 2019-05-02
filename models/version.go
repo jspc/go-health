@@ -9,4 +9,5 @@ type Version struct {
 	Oracle    string `json:"oracle"`
 	Runbook   string `json:"runbook"`
 	Squad     string `json:"squad"`
+	Tier      int    `json:"tier"`
 }

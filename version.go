@@ -2,6 +2,7 @@ package healthcheck
 
 import (
 	"os"
+	"strconv"
 
 	"github.com/jspc/go-health/models"
 )
@@ -10,6 +11,7 @@ const (
 	OracleEnvVar  = "CT_ORACLE"
 	RunbookEnvVar = "CT_RUNBOOK"
 	SquadEnvVar   = "CT_SQUAD"
+	TierEnvVar    = "CT_TIER"
 )
 
 // Version wraps the version model with convenience functions
@@ -22,4 +24,6 @@ func (v *Version) FromEnv() {
 	v.Oracle = os.Getenv(OracleEnvVar)
 	v.Runbook = os.Getenv(RunbookEnvVar)
 	v.Squad = os.Getenv(SquadEnvVar)
+
+	v.Tier, _ = strconv.Atoi(os.Getenv(TierEnvVar))
 }
