@@ -1,5 +1,5 @@
 /*
-healthcheck is the reference implementation of the jspc Healthcheck API.
+healthcheck is the reference implementation of the Culture Trip Healthcheck API.
 
 It can be instantiated as per:
 
