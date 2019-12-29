@@ -18,8 +18,8 @@ type Healthchecks models.Healthchecks
 
 // New returns a Healthchecks object which exposes an API and contains
 // timers and logic for running healthchecks
-func New(v Version) Healthchecks {
-	return Healthchecks{
+func New(v Version) *Healthchecks {
+	return &Healthchecks{
 		Healthchecks: make([]models.Healthcheck, 0),
 
 		Timer:   Tick,
