@@ -39,7 +39,8 @@ func TestHealthchecks_Serve(t *testing.T) {
 				Response: *resp,
 			}
 
-			Healthchecks{}.Handle(c)
+			hc := &Healthchecks{}
+			hc.Handle(c)
 			s := c.Response.StatusCode()
 			if test.expect != s {
 				t.Errorf("expected status %d, received %d", test.expect, s)
@@ -60,7 +61,8 @@ func TestHealthchecks_Serve_Fields(t *testing.T) {
 		Response: *resp,
 	}
 
-	Healthchecks{}.Handle(c)
+	hc := &Healthchecks{}
+	hc.Handle(c)
 
 	body := string(c.Response.Body())
 	expect := `{"report_as_of":"0001-01-01T00:00:00Z","healthchecks":null}`

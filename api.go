@@ -11,7 +11,7 @@ import (
 // which can be mounted into ct fasthttp apps.
 //
 // It is compliant with github.com/beamly/go-http-middleware
-func (h Healthchecks) Handle(ctx *fasthttp.RequestCtx) {
+func (h *Healthchecks) Handle(ctx *fasthttp.RequestCtx) {
 	ctx.SetContentType("application/json")
 
 	if !ctx.IsGet() {
@@ -39,19 +39,19 @@ func (h Healthchecks) Handle(ctx *fasthttp.RequestCtx) {
 	}
 }
 
-func (h Healthchecks) handleVersion(ctx *fasthttp.RequestCtx) {
+func (h *Healthchecks) handleVersion(ctx *fasthttp.RequestCtx) {
 	sendJson(ctx, h.Version)
 }
 
-func (h Healthchecks) handleAll(ctx *fasthttp.RequestCtx) {
+func (h *Healthchecks) handleAll(ctx *fasthttp.RequestCtx) {
 	sendJson(ctx, h)
 }
 
-func (h Healthchecks) handleReadiness(ctx *fasthttp.RequestCtx) {
+func (h *Healthchecks) handleReadiness(ctx *fasthttp.RequestCtx) {
 	ctx.SetStatusCode(h.statusFromType("Readiness"))
 }
 
-func (h Healthchecks) handleLiveness(ctx *fasthttp.RequestCtx) {
+func (h *Healthchecks) handleLiveness(ctx *fasthttp.RequestCtx) {
 	ctx.SetStatusCode(h.statusFromType("Liveness"))
 }
 
